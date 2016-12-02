@@ -1,0 +1,29 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+    login_authentication.class: CoreBundle\AuthenticationHandler\LoginHandler
+    logout_authentication.class: CoreBundle\AuthenticationHandler\LogoutHandler
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    propel.security.acl.connection:
+        class: PropelPDO
+        factory_class: Propel
+        factory_method: getConnection
+        arguments:
+            - "acl"
+
+    login_handler:
+        class: %login_authentication.class%
+        arguments: [ @router, @security.context ]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+
+    logout_handler:
+        class: %logout_authentication.class%
+        arguments: [ @router, @security.context ]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }

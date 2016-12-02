@@ -1,0 +1,54 @@
+<form method="post" action="{{ path('register') }}">
+    <legend>
+        Registration
+    </legend>
+    <label>First Name:
+        <input type="text" name="txtFname" id="txtFname" class="txtFname"/>
+    </label><br>
+    <label>Last Name:
+        <input type="text" name="txtLname" id="txtLname" class="txtLname"/>
+    </label><br>
+    <label>Username:
+        <input type="text" name="txtUsername" id="txtUsername" class="txtUsername"/>
+    </label><br>
+        <label>Password:
+        <input type="password" name="txtPassword" id="txtPassword" class="txtPasword"/>
+    </label><br>
+    <input type="submit" name="btnRegister" id="btnRegister" class="btnRegister"/>
+
+</form>
+
+
+<script src="{{ asset('asset/js/jquery-3.0.0.min.js') }}">
+
+</script>
+
+<script>
+
+    function AddRegister()
+    {
+        $("#btnRegister").click(function(e){
+            e.preventDefault();
+
+
+            var first_name = $("#txtFname").val();
+            var last_name = $("#txtLname").val();
+            var user_name = $("#txtUsername").val();
+            var password = $("#txtPassword").val();
+            var data = {"first_name":first_name,"last_name":last_name,"username":user_name, "password": password };
+
+            $.ajax({
+                method: "POST",
+                url: "{{ path('register') }}",
+                data: data,
+                success: function(data){
+                    console.log(data);
+            }
+            });
+        });
+
+
+
+    }
+    AddRegister();
+</script>

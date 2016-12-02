@@ -1,0 +1,24 @@
+main_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: MainBundle:Default:index }
+
+
+register:
+    path: /register
+    defaults: { _controller: MainBundle:Default:register }
+
+admin:
+    path: /admin
+    defaults: { _controller: MainBundle:Default:index }
+
+audit:
+    path: /audit
+    defaults: { _controller: MainBundle:AuditTrail:index }
+
+time_in:
+    path: /time_in
+    defaults: { _controller:MainBundle:AuditTrail:timein }
+
+time_out:
+    path: /time_out
+    defaults: { _controller:MainBundle:AuditTrail:timeout }
