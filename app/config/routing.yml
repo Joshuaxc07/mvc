@@ -1,0 +1,16 @@
+main:
+    resource: "@MainBundle/Resources/config/routing.yml"
+    prefix:   /
+
+core:
+    resource: "@CoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+_security_check:
+    pattern: /login_check
+
+logout:
+   pattern: /logout
+
+error403:
+    pattern: /403

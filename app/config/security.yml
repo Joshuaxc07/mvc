@@ -1,0 +1,83 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+# app/config/security.yml
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: sha512
+            encode_as_base64: false
+            iterations: 1
+        CoreBundle\Model\EmpAcc: plaintext
+
+    role_hierarchy:
+        ROLE_ANALYST:     ROLE_USER
+        ROLE_ADMIN:       [ ROLE_ANALYST, ROLE_ALLOWED_TO_SWITCH ]
+
+    providers:
+        chain_provider:
+            chain:
+                providers: [ in_memory, prols_user ]
+        in_memory:
+            memory:
+                users:
+                    superadmin: { password: f3b79a6e26ffd1bdf55079739d169e37f06c9bdbbc10e0a09e89a1113963873a03f962a0bdeec23e56461780631f011b466ab1882d3e5330846c7f19442cfdc6, roles: [ 'ROLE_ADMIN' ] }
+        prols_user:
+            propel:
+                class: CoreBundle\Model\EmpAcc
+                property: username
+
+    access_denied_url: error403
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        login:
+            pattern:  ^/login$
+            security: false
+
+
+
+        sendemail:
+            pattern: ^/sendemail$
+            anonymous: ~
+            security: false
+
+        export:
+            pattern: ^/export$
+            anonymous: ~
+            security: false
+
+#        requestaccess:
+#            pattern: ^/requestaccess$
+#            anonymous: ~
+#            security: false
+
+        secured_area:
+            provider: chain_provider
+            pattern: ^/admin
+            form_login:
+                check_path: _security_check
+                login_path: login
+                default_target_path: /
+                use_forward: true
+                use_referer: true
+                success_handler: login_handler
+            logout:
+                path: /logout
+                target: login
+                success_handler: logout_handler
+            anonymous: ~
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/error404, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/error403, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sendemail, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/export, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/requestaccess, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_ANALYST }
+

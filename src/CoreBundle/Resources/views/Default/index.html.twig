@@ -1,0 +1,16 @@
+<form method="post" action="{{ path('_security_check') }}">
+    <label>Enter Username:
+    <input type="text" name="txtName" id="txtName" class="txtName"/>
+    <label>
+    <label>Enter Password:
+        <input type="password" name="txtPass" id="txtPass" class="txtPass"/>
+    </label>
+    <input type="submit" name="btnSubmit" id="btnSubmit" class="btnSubmit"/>
+        {% if error %}
+            <div class="error" style="color: red;">Invalid Username/Password</div>
+        {% endif %}
+</form>
+
+<p>Don't have an Account?  <a href="{{ path('register') }}" name="Register">Register</a></p>
+
+

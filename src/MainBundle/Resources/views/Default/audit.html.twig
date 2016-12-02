@@ -1,0 +1,40 @@
+<!doctype html>
+<head></head>
+<body>
+<form method="post">
+
+    <label>
+
+    <p id="demo"></p>
+        <input type="submit" name="btntime_in" id="btntime_in" value="TIME IN"/>
+</form>
+<div id="console"></div>
+<script src="{{ asset('asset/js/jquery-3.0.0.min.js') }}"></script>
+
+<script>
+    document.getElementById("demo").innerHTML = Date();
+    function time_in()
+    {
+        var today = new Date();
+        var date = today.getFullYear()+ '-' + (today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours()+ ':' + today.getMinutes() + ':' + today.getSeconds();
+        var dateTime = date+' '+time;
+        document.getElementById("console").innerHTML = dateTime;
+        $("#btntime_in").click(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                method: "POST",
+                url: "{{ path('time_in') }}",
+                data: {"time_in":dateTime},
+                success: function(data){
+                    console.log(data);
+                    $(location).attr('href', '{{ path('time_out') }}');
+                }
+            });
+        });
+    }
+    time_in();
+</script>
+</body>
+</html>
