@@ -46,6 +46,7 @@ class AuditTrailController extends Controller
             $employee_audit->save();
             return new JsonResponse($employee_audit);
         }
+        echo "a";
         $response = new Response();
         $response->setStatusCode(200);
 
